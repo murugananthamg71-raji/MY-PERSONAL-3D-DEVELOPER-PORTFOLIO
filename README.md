@@ -5,13 +5,6 @@ A modern, high-performance developer portfolio packed with an interactive 3D key
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/murugananthamg71-raji/MY-PERSONAL-3D-DEVELOPER-PORTFOLIO)
 
 
-<img
-  src="https://my-personal-3-d-developer-portfolio.vercel.app/"
-  alt="Muruganantham 3D Developer Portfolio Preview"
-  className="w-full rounded-xl"
-/>
-
-
 ## ✨ Features
 
 - **Interactive 3D Keyboard** — Programmatically generated Chibi keyboard where each keycap represents a skill, revealing titles and descriptions on hover/press
