@@ -1,38 +1,27 @@
 "use client";
-import { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+
+import { motion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import styles from "./style.module.scss";
-import { opacity, background } from "./anim";
-import Nav from "./nav";
 import { cn } from "@/lib/utils";
 import FunnyThemeToggle from "../theme/funny-theme-toggle";
-import { Button } from "../ui/button";
-import { config } from "@/data/config";
-import OnlineUsers from "../realtime/online-users";
-import { GameTrigger } from "../game/game-trigger";
+import { links as navItems } from "./config";
 
 interface HeaderProps {
   loader?: boolean;
-  // server-rendered slot; client header can't fetch it itself without a mount-time shift
   githubStars?: React.ReactNode;
 }
 
 const Header = ({ loader, githubStars }: HeaderProps) => {
-  const [isActive, setIsActive] = useState<boolean>(false);
-  const isHome = usePathname() === "/";
+  const pathname = usePathname();
+
   return (
     <motion.header
       className={cn(
         styles.header,
-        "transition-colors delay-100 duration-500 ease-in z-[1000]"
+        "transition-colors delay-100 duration-500 ease-in border-b border-border/40 bg-background/80 backdrop-blur-md"
       )}
-      style={{
-        background: isActive ? "hsl(var(--background) / .8)" : "transparent",
-        // backgroundImage:
-        //   "linear-gradient(0deg, rgba(0, 0, 0, 0), rgb(0, 0, 0))",
-      }}
       initial={{
         y: -80,
       }}
@@ -40,69 +29,57 @@ const Header = ({ loader, githubStars }: HeaderProps) => {
         y: 0,
       }}
       transition={{
-        delay: loader ? 3.5 : 0, // 3.5 for loading, .5 can be added for delay
+        delay: loader ? 3.5 : 0,
         duration: 0.8,
       }}
     >
-      {/* <div
-        className="absolute inset-0 "
-        style={{
-          mask: "linear-gradient(rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0) 12.5%)",
-        }}
-      >
-      </div> */}
-      <div className={cn(styles.bar, "flex items-center justify-between")}>
-        <Link href="/" className="flex items-center justify-center">
-          <Button variant={"link"} className="text-md">
-            {config.author}
-          </Button>
+      <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4 px-1 sm:px-4">
+        {/* Left: Brand Logo */}
+        <Link href="/" className="flex items-center justify-center gap-2 group shrink-0">
+          <span className="font-display font-black text-xs sm:text-sm tracking-wider px-2 py-0.5 rounded bg-primary text-primary-foreground group-hover:scale-105 transition-transform shadow-sm">
+            MG
+          </span>
+          <span className="font-display font-bold text-xs sm:text-sm tracking-tight text-foreground hidden md:inline group-hover:text-primary transition-colors">
+            MURUGANANTHAM
+          </span>
         </Link>
 
-        <FunnyThemeToggle className="w-6 h-6 mr-4 hidden md:flex" />
-        {isHome && process.env.NEXT_PUBLIC_WS_URL && (
-          <div className="flex items-center">
-            <GameTrigger className="mr-3" />
-            <OnlineUsers />
-          </div>
-        )}
-        {githubStars}
-        <Button
-          variant={"ghost"}
-          onClick={() => setIsActive(!isActive)}
-          aria-label={isActive ? "Close menu" : "Open menu"}
-          aria-expanded={isActive}
+        {/* Center: Navigation Links */}
+        <nav
           className={cn(
-            styles.el,
-            "m-0 p-0 h-6 bg-transparent flex items-center justify-center"
+            styles.navContainer,
+            "flex items-center justify-center gap-1 sm:gap-1.5 p-1 rounded-full bg-secondary/50 dark:bg-secondary/25 border border-border/40 backdrop-blur-md overflow-x-auto max-w-[calc(100vw-130px)] sm:max-w-none shadow-inner"
           )}
         >
-          <div className="relative hidden md:flex items-center">
-            <motion.p
-              variants={opacity}
-              animate={!isActive ? "open" : "closed"}
-            >
-              Menu
-            </motion.p>
-            <motion.p variants={opacity} animate={isActive ? "open" : "closed"}>
-              Close
-            </motion.p>
-          </div>
-          <div
-            className={`${styles.burger} ${isActive ? styles.burgerActive : ""
-              }`}
-          ></div>
-        </Button>
+          {navItems.map((item) => {
+            const isCurrent =
+              item.href === "/"
+                ? pathname === "/"
+                : pathname === item.href || pathname?.startsWith(item.href + "/");
+
+            return (
+              <Link
+                key={item.title}
+                href={item.href}
+                className={cn(
+                  "px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs md:text-sm font-medium transition-all duration-200 whitespace-nowrap shrink-0",
+                  isCurrent
+                    ? "bg-primary text-primary-foreground font-semibold shadow-sm shadow-primary/25 scale-[1.02]"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/70"
+                )}
+              >
+                {item.title}
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Right: Theme Toggle & GitHub Stars */}
+        <div className="flex items-center gap-2 shrink-0">
+          <FunnyThemeToggle className="w-8 h-8 flex" />
+          {githubStars}
+        </div>
       </div>
-      <motion.div
-        variants={background}
-        initial="initial"
-        animate={isActive ? "open" : "closed"}
-        onClick={() => setIsActive(false)}
-        className={styles.background}
-      ></motion.div>
-      <AnimatePresence mode="wait">
-        {isActive && <Nav setIsActive={setIsActive} />}
-      </AnimatePresence>
     </motion.header>
   );
 };

@@ -19,6 +19,7 @@ export default function SiteFrame({
 }) {
   const pathname = usePathname();
   const bare = pathname?.startsWith("/components") ?? false;
+  const isHome = pathname === "/";
 
   if (bare) return <>{children}</>;
 
@@ -26,7 +27,7 @@ export default function SiteFrame({
     <>
       <Header githubStars={githubStars} />
       {children}
-      <Footer />
+      {!isHome && <Footer />}
       <AppOverlays />
     </>
   );

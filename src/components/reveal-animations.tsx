@@ -87,7 +87,11 @@ export const BoxReveal = ({
   }, [isInView, mainControls, slideControls, reducedMotion]);
 
   return (
-    <div ref={ref} style={{ position: "relative", width, overflow: "hidden" }}>
+    <div
+      ref={ref}
+      style={{ position: "relative", width, overflow: "hidden" }}
+      className="mx-auto flex flex-col items-center justify-center text-center w-full"
+    >
       <motion.div
         variants={{
           hidden: { opacity: reducedMotion ? 1 : 0, y: reducedMotion ? 0 : 75 },
@@ -96,6 +100,7 @@ export const BoxReveal = ({
         initial={reducedMotion ? "visible" : "hidden"}
         animate={mainControls}
         transition={{ duration: reducedMotion ? 0 : duration ?? 0.5, delay }}
+        className="w-full flex justify-center items-center text-center"
       >
         {children}
       </motion.div>

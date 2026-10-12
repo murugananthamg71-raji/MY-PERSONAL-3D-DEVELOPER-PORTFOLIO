@@ -1,8 +1,10 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import { File, Github, Linkedin } from "lucide-react";
+import { FileDown, Mail, ArrowRight } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -10,144 +12,185 @@ import {
 } from "@/components/ui/tooltip";
 import { usePreloader } from "../preloader";
 import { BlurIn, BoxReveal } from "../reveal-animations";
-import ScrollDownIcon from "../scroll-down-icon";
-import { SiGithub, SiLinkedin, SiX } from "react-icons/si";
+import { SiGithub, SiLinkedin } from "react-icons/si";
 import { config } from "@/data/config";
-
 import SectionWrapper from "../ui/section-wrapper";
+import { motion, AnimatePresence } from "motion/react";
 
 const HeroSection = () => {
   const { isLoading } = usePreloader();
+  const [roleIndex, setRoleIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRoleIndex((prev) => (prev + 1) % config.roles.length);
+    }, 2800);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <SectionWrapper id="hero" className={cn("relative w-full h-screen")}>
-      <div className="grid md:grid-cols-2">
+    <SectionWrapper id="hero" className={cn("relative w-full min-h-screen flex flex-col justify-between")}>
+      <div className="grid grid-cols-1 md:grid-cols-2 flex-1 items-center">
         <div
           className={cn(
-            "h-[calc(100dvh-3rem)] md:h-[calc(100dvh-4rem)] z-[2]",
+            "min-h-[calc(100dvh-3rem)] md:min-h-[calc(100dvh-4rem)] z-[2]",
             "col-span-1",
-            "flex flex-col justify-start md:justify-center items-center md:items-start",
-            "pt-28 sm:pb-16 md:p-20 lg:p-24 xl:p-28"
+            "flex flex-col justify-center items-start",
+            "pt-24 pb-16 px-6 sm:px-12 md:pl-16 lg:pl-20 xl:pl-24"
           )}
         >
           {!isLoading && (
-            <div className="flex flex-col">
-              <div>
-                <BlurIn delay={0.7}>
-                  <p
-                    className={cn(
-                      "md:self-start mt-4 font-medium text-md text-slate-500 dark:text-zinc-400",
-                      "cursor-default sm:text-xl md:text-xl whitespace-nowrap bg-clip-text "
-                    )}
-                  >
-                    Hi, I am
-                    <br className="md:hidden" />
-                  </p>
-                </BlurIn>
+            <div className="flex flex-col max-w-xl">
+              {/* Small Introduction */}
+              <BlurIn delay={0.3}>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono font-medium text-primary mb-4 tracking-wider uppercase">
+                  <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
+                  {config.subHeadline}
+                </div>
+              </BlurIn>
 
-                <BlurIn delay={1}>
-                  <Tooltip delayDuration={300}>
-                    <TooltipTrigger asChild>
-                      <h1
-                        className={cn(
-                          "-ml-[6px] leading-none text-transparent text-slate-800 text-left",
-                          "font-bold text-7xl md:text-7xl lg:text-8xl xl:text-9xl",
-                          "cursor-default text-edge-outline font-display "
-                        )}
-                      >
-                        {config.author.split(" ")[0]}
-                        <br className="md:block hiidden" />
-                        {config.author.split(" ")[1]}
-                      </h1>
-                    </TooltipTrigger>
-                    <TooltipContent
-                      side="top"
-                      className="dark:bg-white dark:text-black"
-                    >
-                      theres something waiting for you in devtools
-                    </TooltipContent>
-                  </Tooltip>
-                </BlurIn>
-                {/* <div className="md:block hidden bg-gradient-to-r from-zinc-300/0 via-zinc-300/50 to-zinc-300/0 w-screen h-px animate-fade-right animate-glow" /> */}
-                <BlurIn delay={1.2}>
-                  <p
-                    className={cn(
-                      "md:self-start md:mt-4 font-medium text-md text-slate-500 dark:text-zinc-400",
-                      "cursor-default sm:text-xl md:text-xl whitespace-nowrap bg-clip-text "
-                    )}
-                  >
-                    A Full Stack Web Developer
-                  </p>
-                </BlurIn>
-              </div>
-              <div className="mt-8 flex flex-col gap-3 w-fit">
-                <Link
-                  href={
-                    "https://drive.google.com/file/d/1MTSsUA8V7Po2AsNXT8kZ5sLOpzC8l7qm/view?usp=sharing"
-                  }
-                  target="_blank"
-                  className="flex-1"
+              {/* Main Headline */}
+              <BlurIn delay={0.6}>
+                <h1
+                  className={cn(
+                    "leading-tight text-foreground font-display font-bold",
+                    "text-4xl sm:text-5xl lg:text-6xl tracking-tight text-left mb-3"
+                  )}
                 >
-                  <BoxReveal delay={2} width="100%" >
-                    <Button className="flex items-center gap-2 w-full">
-                      <File size={24} />
-                      <p>Resume</p>
-                    </Button>
-                  </BoxReveal>
+                  {config.headline}
+                </h1>
+              </BlurIn>
+
+              {/* Animated Role Text */}
+              <div className="h-10 sm:h-12 flex items-center mb-4 overflow-hidden">
+                <span className="text-muted-foreground text-lg sm:text-xl font-medium mr-2">
+                  I am a
+                </span>
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={roleIndex}
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -20, opacity: 0 }}
+                    transition={{ duration: 0.35, ease: "easeOut" }}
+                    className="text-lg sm:text-xl font-bold bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent"
+                  >
+                    {config.roles[roleIndex]}
+                  </motion.span>
+                </AnimatePresence>
+              </div>
+
+              {/* Short Description */}
+              <BlurIn delay={0.9}>
+                <p className="text-muted-foreground text-sm sm:text-base leading-relaxed mb-8">
+                  {config.description.short}
+                </p>
+              </BlurIn>
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center gap-3 mb-8 pointer-events-auto">
+                <Link href="/projects">
+                  <Button className="group flex items-center gap-2 shadow-sm font-medium">
+                    Explore My Work
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </Button>
                 </Link>
-                <div className="md:self-start flex gap-3">
-                  <Tooltip delayDuration={300}>
-                    <TooltipTrigger asChild>
-                      <Link href={"#contact"}>
-                        <Button
-                          variant={"outline"}
-                          className="block w-full overflow-hidden"
-                        >
-                          Hire Me
-                        </Button>
-                      </Link>
-                    </TooltipTrigger>
-                    <TooltipContent side="bottom">
-                      <p>pls 🥹 🙏</p>
-                    </TooltipContent>
-                  </Tooltip>
-                  <div className="flex items-center h-full gap-2">
-                    <Link
-                      href={config.social.twitter}
-                      target="_blank"
-                    >
-                      <Button variant={"outline"}>
-                        <SiX size={24} />
-                      </Button>
-                    </Link>
+
+                <Link href="/resume">
+                  <Button variant="outline" className="flex items-center gap-2 font-medium">
+                    <FileDown className="w-4 h-4" />
+                    Download Resume
+                  </Button>
+                </Link>
+
+                <Link href="/contact">
+                  <Button variant="secondary" className="flex items-center gap-2 font-medium">
+                    <Mail className="w-4 h-4" />
+                    Contact Me
+                  </Button>
+                </Link>
+              </div>
+
+              {/* Social Links */}
+              <div className="flex items-center gap-3 pointer-events-auto">
+                <Tooltip delayDuration={200}>
+                  <TooltipTrigger asChild>
                     <Link
                       href={config.social.github}
                       target="_blank"
-                      className="cursor-can-hover"
+                      rel="noopener noreferrer"
+                      aria-label="GitHub Profile"
                     >
-                      <Button variant={"outline"}>
-                        <SiGithub size={24} />
+                      <Button variant="outline" size="icon" className="rounded-full w-9 h-9">
+                        <SiGithub className="w-4 h-4" />
                       </Button>
                     </Link>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom">GitHub Profile</TooltipContent>
+                </Tooltip>
+
+                <Tooltip delayDuration={200}>
+                  <TooltipTrigger asChild>
                     <Link
                       href={config.social.linkedin}
                       target="_blank"
-                      className="cursor-can-hover"
+                      rel="noopener noreferrer"
+                      aria-label="LinkedIn Profile"
                     >
-                      <Button variant={"outline"}>
-                        <SiLinkedin size={24} />
+                      <Button variant="outline" size="icon" className="rounded-full w-9 h-9">
+                        <SiLinkedin className="w-4 h-4" />
                       </Button>
                     </Link>
-                  </div>
-                </div>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom">LinkedIn Profile</TooltipContent>
+                </Tooltip>
+
+                <Tooltip delayDuration={200}>
+                  <TooltipTrigger asChild>
+                    <Link
+                      href={`mailto:${config.email}`}
+                      aria-label="Send Email"
+                    >
+                      <Button variant="outline" size="icon" className="rounded-full w-9 h-9">
+                        <Mail className="w-4 h-4" />
+                      </Button>
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom">Email: {config.email}</TooltipContent>
+                </Tooltip>
               </div>
             </div>
           )}
         </div>
-        <div className="grid col-span-1"></div>
+
+        {/* Right column gives space for 3D Keyboard canvas */}
+        <div className="col-span-1 hidden md:block" />
       </div>
-      <div className="absolute bottom-10 left-[50%] translate-x-[-50%]">
-        <ScrollDownIcon />
+
+      {/* Full-width Animated Marquee Ribbon */}
+      <div className="w-full overflow-hidden border-t border-border/40 bg-secondary/30 backdrop-blur-md py-3 sm:py-3.5 pointer-events-auto z-10">
+        <motion.div
+          className="flex whitespace-nowrap gap-8 items-center"
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{ repeat: Infinity, ease: "linear", duration: 22 }}
+        >
+          {Array.from({ length: 10 }).map((_, i) => (
+            <div key={i} className="flex items-center gap-6 sm:gap-8 shrink-0">
+              <span className="font-display font-black text-sm sm:text-lg md:text-xl tracking-widest uppercase bg-gradient-to-r from-blue-400 via-indigo-300 via-purple-400 to-emerald-400 bg-clip-text text-transparent">
+                MURUGANANTHAM PORTFOLIO
+              </span>
+              <span className="text-primary text-xs sm:text-sm">✦</span>
+              <span className="font-mono text-xs sm:text-sm text-muted-foreground uppercase tracking-wider">
+                FULL STACK DEVELOPER
+              </span>
+              <span className="text-emerald-400 text-xs sm:text-sm">✦</span>
+              <span className="font-mono text-xs sm:text-sm text-muted-foreground uppercase tracking-wider">
+                AI ENTHUSIAST
+              </span>
+              <span className="text-purple-400 text-xs sm:text-sm">✦</span>
+            </div>
+          ))}
+        </motion.div>
       </div>
     </SectionWrapper>
   );

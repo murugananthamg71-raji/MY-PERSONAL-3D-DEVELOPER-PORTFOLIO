@@ -1,44 +1,52 @@
 const config = {
-  title: "Naresh Khatri | Full-Stack Developer",
-  description: {
-    long: "Explore the portfolio of Naresh, a full-stack developer and creative technologist specializing in interactive web experiences, 3D animations, and innovative projects. Discover my latest work, including Coding Ducks, The Booking Desk, Ghostchat, and more. Let's build something amazing together!",
-    short:
-      "Discover the portfolio of Naresh, a full-stack developer creating interactive web experiences and innovative projects.",
-  },
-  keywords: [
-    "Naresh",
-    "portfolio",
-    "full-stack developer",
-    "creative technologist",
-    "web development",
-    "3D animations",
-    "interactive websites",
-    "Coding Ducks",
-    "The Booking Desk",
-    "Ghostchat",
-    "web design",
-    "GSAP",
-    "React",
-    "Next.js",
-    "Framer Motion",
+  title: "Muruganantham G | Full Stack Developer",
+  headline: "Building Digital Experiences with Code.",
+  subHeadline: "HELLO, I'M MURUGANANTHAM G",
+  roles: [
+    "Full Stack Developer",
+    "React Developer",
+    "Python Developer",
+    "AI Enthusiast",
   ],
-  author: "Naresh Khatri",
-  email: "naresh.khatri2345@gmail.com",
-  site: "https://nareshkhatri.dev",
+  description: {
+    long: "I am a Full Stack Developer passionate about building modern web applications, exploring artificial intelligence, and creating digital experiences that solve real-world problems. I enjoy learning new technologies, developing practical projects, and turning innovative ideas into functional software.",
+    short: "I build responsive web applications and explore AI-powered solutions that address real-world challenges.",
+  },
+  location: "Coimbatore, Tamil Nadu, India",
+  keywords: [
+    "Muruganantham G",
+    "Muruganantham",
+    "portfolio",
+    "Full Stack Developer",
+    "React Developer",
+    "Python Developer",
+    "AI Enthusiast",
+    "Next.js",
+    "Django",
+    "FastAPI",
+    "Three.js",
+    "3D Portfolio",
+    "Coimbatore Developer",
+  ],
+  author: "Muruganantham G",
+  email: "murugananthamg@gmail.com",
+  phone: "+91 8870642691",
+  site: "https://muruganantham-portfolio-13.vercel.app",
 
-  // for github stars button
-  githubUsername: "naresh-khatri",
+  // for github stars button or repo attribution
+  githubUsername: "murugananthamg71-raji",
   githubRepo: "3d-portfolio",
 
   get ogImg() {
     return this.site + "/assets/seo/og-image.png";
   },
   social: {
-    twitter: "https://x.com/nothotchaddi",
-    linkedin: "https://www.linkedin.com/in/naresh-khatri/",
-    instagram: "https://www.instagram.com/hotchaddi",
-    facebook: "https://www.facebook.com/HotChaddi/",
-    github: "https://github.com/Naresh-Khatri",
+    github: "https://github.com/murugananthamg71-raji",
+    linkedin: "https://linkedin.com/in/muruganantham-g-7893b2267",
+    email: "mailto:murugananthamg@gmail.com",
+    phone: "tel:+918870642691",
+    portfolio: "https://muruganantham-portfolio-13.vercel.app/",
   },
 };
+
 export { config };

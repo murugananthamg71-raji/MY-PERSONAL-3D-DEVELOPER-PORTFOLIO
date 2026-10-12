@@ -38,7 +38,7 @@ function SmoothScroll({ children, isInsideModal = false }: LenisProps) {
       root
       autoRaf={false}
       options={{
-        duration: reducedMotion ? 0 : 2,
+        duration: reducedMotion ? 0 : 0.8,
         smoothWheel: !reducedMotion,
         prevent: (node) => {
           if (isInsideModal) return true;
