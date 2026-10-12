@@ -4,7 +4,13 @@ A modern, high-performance developer portfolio packed with an interactive 3D key
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/murugananthamg71-raji/MY-PERSONAL-3D-DEVELOPER-PORTFOLIO)
 
-![Portfolio Preview](https://github.com/Naresh-Khatri/Portfolio/blob/main/public/assets/projects-screenshots/portfolio/landing.png?raw=true)
+
+<img
+  src="https://my-personal-3-d-developer-portfolio.vercel.app/"
+  alt="Muruganantham 3D Developer Portfolio Preview"
+  className="w-full rounded-xl"
+/>
+
 
 ## ✨ Features
 
